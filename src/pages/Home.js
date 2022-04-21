@@ -1,12 +1,13 @@
 import React, {useState, useMemo} from 'react';
+import './css/Home.css';
 
 //creates the character
 function Home() {
 
   return (
     
-    <div>
-     
+    <div className='Home'>
+      
     </div>
     
   );
