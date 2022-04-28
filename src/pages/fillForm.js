@@ -2,15 +2,30 @@
 // https://pdf-lib.js.org/#install
 // https://github.com/rndme/download
 // Put this in the file you want to use the function in import:
-// import { fillForm } from "./fillForm";
-// Test inputs: fillForm([8, 12, 14, 15, 16, 18], ['Leon the Great', 'hermit', 'Jim', 'Dwarf', 'Chaotic Evil', 'Wizard'], ['top fields 2, put stuff here'], [1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0], [1, 1, 0, 0, 0, 0], ['Very cool', 'Wants to set stuff on fire', 'fire', 'bit too much fire'], [19, 25], 6, 'Likes fire, a lot', 'Fire, arson, other fire related crimes', 'gasoline, match, napalm', 'Arsonist', ['Firebolt', 'int', 10, 'fire', 'Flamethrower', 'dex', 12, 'fire +', 'Fist', 'str', 4, 'bludgeoning'], [0, 0, 200, 400, 800], [1, 'int'])
-
+// import { fillForm } from "./fillForm"
+// Test inputs: fillForm([8, 12, 14, 15, 16, 18], ['Leon the Great', 'hermit', 'Jim', 'Dwarf', 'Chaotic Evil', 'Wizard'], ['top fields 2, put stuff here'], [1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0], [1, 1, 0, 0, 0, 0], ['Very cool', 'Wants to set stuff on fire', 'fire', 'bit too much fire'], [19, 25], 6, 'Likes fire, a lot', 'Fire, arson, other fire related crimes', 'gasoline, match, napalm', 'Arsonist', [0, 0, 200, 400, 800], [1, 'int'])
+/* attributes: an array of 6 ints that reprents the six ability scores [str, dex con, wis, int, cha]
+ * topFields1: an array of 6 strings [PC name, background, player name, race, alignment, class]
+ * topFields2: an array of 6 strings [Age, height, weight, eyes, skin, hair]
+ * skillProf: an array of 18 ints, with a 1 set for being prof in the skill [Acrobatics, Animal Handling, Arcana, Atletics, Deception, History, Inisgnt, Intimidation, Investigation, Medcine, Nature, Perception, Performance, Persuassion, Religion, Sleight of Hand, Stealth, Survival]
+ * saveProf: an array of 6 ints, with a 1 set for being prof in the save [str save, dex save, con save, int save, wis save, cha save]
+ * traits: an array of 4 strings [Personality traits, ideals, bonds, flaws]
+ * acSpeed: an array of 2 ints [ac, speed]
+ * hp: an int with the starting hp of the class
+ * backstory: a string with the PC's backstory
+ * otherProf: a formatted string with the pc's other profs (langauges and weapon types) (Newline after every entry)
+ * equiptment: a formatted string with the pc's equiptment (Newline after every entry)
+ * features: a formatted string with the pc's features (Newline after every entry)
+ * money: an array of 5 innts [cp, sp, ep, gp, pp]
+ * ifCaster: an array of 2 strings[ 1 if caster, 0 if not, casting ability(int, cha, wis)]
+ *
+ */
 
 import { PDFDocument } from 'pdf-lib'
 import download from 'downloadjs'
 import raw from './CharSheet.pdf'
 
-export async function fillForm(attributes, topFields1, topFields2, skillProf, saveProfs, traits, acSpeed, hp, backstory, otherProf, equipment, features, attacks, money, ifCaster) {
+export async function fillForm(attributes, topFields1, topFields2, skillProf, saveProfs, traits, acSpeed, hp, backstory, otherProf, equipment, features, money, ifCaster) {
 	//https://media.wizards.com/2016/dnd/downloads/5E_CharacterSheet_Fillable.pdf
 	//The pdf being used to fill the form
 	//Any errors will be outputed as an alert on the webpage
@@ -172,6 +187,17 @@ export async function fillForm(attributes, topFields1, topFields2, skillProf, sa
 		raceField.setText(topFields1[3]);
 		alignmentField.setText(topFields1[4]);
 		xpField.setText('0');
+
+		//Sets traits
+		personalityField.setText(traits[0])
+		idealsField.setText(traits[1])
+		bondsField.setText(traits[2])
+		flawsField.setText(traits[3])
+
+		// Sets ac, speed, and initiative
+		acField.setText(String(acSpeed[0]))
+		initiativeField.setText(String(dexModifier))
+		speedField.setText(String(acSpeed[1]))
 
 		//Names the pdf the player character's name and downloads it
 		const pdfBytes = await pdfDoc.save();
